@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home Expo</title>
     <link rel="stylesheet" href="css/style.css" />
+    <script src="js/register.js"></script>
   </head>
   <body>
     <nav>
@@ -15,7 +16,12 @@
       </ul>
     </nav>
     <h1>Booth Register</h1>
-    <form class="form-container" method="POST">
+    <form
+      name="register-form"
+      class="form-container"
+      method="POST"
+      onsubmit="return validateRegisterForm();"
+    >
       <div class="form-item">
         <div>
           <label for="company-name"> Company Name </label>
@@ -25,7 +31,8 @@
       <div class="form-item">
         <div>
           <span>Booth Size</span>
-          <select name="booth-size">
+          <select name="booth-size" required>
+            <option value=""></option>
             <option value="10-10">10x10</option>
             <option value="10-15">10x15</option>
           </select>
@@ -38,14 +45,19 @@
         <input
           type="checkbox"
           id="required-table"
+          name="required-table"
           style="display: inline; width: 1.5rem; margin: 0px"
         />
       </div>
       <div class="form-item">
-        <label for="chair-required">
+        <label for="number-of-chair-required">
           <span>Number of Chair Required</span>
         </label>
-        <input type="number" id="chair-required" />
+        <input
+          type="number"
+          id="number-of-chair-required"
+          name="number-of-chair-required"
+        />
       </div>
       <div class="form-item">
         <div>
@@ -63,5 +75,6 @@
         <input type="submit" />
       </div>
     </form>
+    <div id="message-box-container"></div>
   </body>
 </html>
