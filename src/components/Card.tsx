@@ -1,32 +1,18 @@
 import Image from "next/image";
 import styles from "./card.module.css";
 
-export default function Card() {
+export default function Card({
+  name,
+  imgSrc,
+}: {
+  name: string;
+  imgSrc: string;
+}) {
   return (
-    <div className={styles.card}>
-      <h3 className={styles.cardHeader}>Moderna Vaccine</h3>
-      <div className={styles.cardBody}>
-        <div className={styles.cardContainer}>
-          <div className={styles.cardImageContainer}>
-            <Image
-              src={"/img/vaccine.jpg"}
-              alt="vaccine"
-              fill={true}
-              objectFit="cover"
-              className={styles.cardImage}
-            />
-          </div>
-        </div>
-        <div className={styles.cardContainer}>
-          <div className={styles.cardText}>
-            <div>Developed By: Moderna</div>
-            <div>Type: mRNA</div>
-            <div>Average Effective: 90%</div>
-            <br />
-            <div>Required 2 Doses</div>
-            <div>Suitable for 18 years old and up</div>
-          </div>
-        </div>
+    <div className="w-1/4 h-[300px] bg-blue-400 shadow-xl min-w-[300px] m-[20px] flex flex-col rounded-xl overflow-hidden">
+      <h3 className="w-full text-center align-middle text-lg">{name}</h3>
+      <div className="w-full relative grow">
+        <Image src={imgSrc} alt={name} fill={true} className="object-cover" />
       </div>
     </div>
   );
