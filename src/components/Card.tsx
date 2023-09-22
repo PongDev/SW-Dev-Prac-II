@@ -22,6 +22,7 @@ export default function Card({
       <Rating
         className="m-auto my-1"
         value={rating}
+        onClick={(e) => e.stopPropagation()}
         onChange={(e, value) => {
           onRatingUpdate(name, value ?? 0);
         }}

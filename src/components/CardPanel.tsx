@@ -1,6 +1,7 @@
 "use client";
 
 import Card from "@/components/Card";
+import Link from "next/link";
 import { useReducer } from "react";
 
 export default function CardPanel() {
@@ -28,27 +29,29 @@ export default function CardPanel() {
     dispatchRating({ type: "ADD", hospital: hospitalName, rating: rating });
   };
 
+  const mockHospitalData = [
+    { id: "001", name: "Chulalongkorn Hospital", imgSrc: "/img/chula.jpg" },
+    { id: "002", name: "Rajavithi Hospital", imgSrc: "/img/rajavithi.jpg" },
+    {
+      id: "003",
+      name: "Thammasat University Hospital",
+      imgSrc: "/img/thammasat.jpg",
+    },
+  ];
+
   return (
     <div>
       <div className="flex flex-wrap justify-around">
-        <Card
-          name="Chulalongkorn Hospital"
-          imgSrc="/img/chula.jpg"
-          rating={ratingMap.get("Chulalongkorn Hospital") ?? 0}
-          onRatingUpdate={onRatingUpdate}
-        />
-        <Card
-          name="Rajavithi Hospital"
-          imgSrc="/img/rajavithi.jpg"
-          rating={ratingMap.get("Rajavithi Hospital") ?? 0}
-          onRatingUpdate={onRatingUpdate}
-        />
-        <Card
-          name="Thammasat University Hospital"
-          imgSrc="/img/thammasat.jpg"
-          rating={ratingMap.get("Thammasat University Hospital") ?? 0}
-          onRatingUpdate={onRatingUpdate}
-        />
+        {mockHospitalData.map((hospital) => (
+          <Link href={`/hospital/${hospital.id}`}>
+            <Card
+              name={hospital.name}
+              imgSrc={hospital.imgSrc}
+              rating={ratingMap.get(hospital.name) ?? 0}
+              onRatingUpdate={onRatingUpdate}
+            />
+          </Link>
+        ))}
       </div>
       <div className="mx-5 my-1 text-lg font-semibold">
         {Array.from(ratingMap).map(([hospital, rating]) => {

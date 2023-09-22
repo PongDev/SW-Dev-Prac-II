@@ -3,6 +3,7 @@
 import Image from "next/image";
 import styles from "./banner.module.css";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Banner() {
   const bannerImage = [
@@ -12,6 +13,7 @@ export default function Banner() {
     "/img/banner4.jpg",
   ];
   const [bannerIdx, setBannerIdx] = useState(0);
+  const router = useRouter();
 
   return (
     <div className={styles.banner}>
@@ -30,6 +32,17 @@ export default function Banner() {
         <h3 className="text-lg font-medium">
           Get Free Vaccine for You and Your Family
         </h3>
+      </div>
+      <div className="absolute bottom-0 right-0">
+        <button
+          className="rounded-lg bg-orange-400 px-3 py-2 m-2 text-slate-800 font-semibold hover:bg-amber-400 hover:text-slate-900"
+          onClick={(e) => {
+            e.stopPropagation();
+            router.push("/hospital");
+          }}
+        >
+          View Hospital Info
+        </button>
       </div>
     </div>
   );
