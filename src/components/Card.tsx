@@ -10,8 +10,8 @@ export default function Card({
 }: {
   name: string;
   imgSrc: string;
-  rating: number;
-  onRatingUpdate: Function;
+  rating?: number;
+  onRatingUpdate?: Function;
 }) {
   return (
     <InteractiveCard>
@@ -19,15 +19,19 @@ export default function Card({
       <div className="w-full relative grow">
         <Image src={imgSrc} alt={name} fill={true} className="object-cover" />
       </div>
-      <Rating
-        className="m-auto my-1"
-        value={rating}
-        onClick={(e) => e.stopPropagation()}
-        onChange={(e, value) => {
-          onRatingUpdate(name, value ?? 0);
-        }}
-        size="large"
-      />
+      {onRatingUpdate && rating ? (
+        <Rating
+          className="m-auto my-1"
+          value={rating}
+          onClick={(e) => e.stopPropagation()}
+          onChange={(e, value) => {
+            onRatingUpdate(name, value ?? 0);
+          }}
+          size="large"
+        />
+      ) : (
+        <></>
+      )}
     </InteractiveCard>
   );
 }

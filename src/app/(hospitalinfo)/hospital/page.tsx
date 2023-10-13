@@ -1,5 +1,14 @@
-import CardPanel from "@/components/CardPanel";
+import getHospitals from "@/libs/getHospitals";
+import HospitalCatalog from "@/components/HospitalCatalog";
+import { Suspense } from "react";
+import { LinearProgress } from "@mui/material";
 
 export default function Home() {
-  return <CardPanel />;
+  const hospitals = getHospitals();
+
+  return (
+    <Suspense fallback={<LinearProgress />}>
+      <HospitalCatalog hospitalsData={hospitals} />;
+    </Suspense>
+  );
 }
