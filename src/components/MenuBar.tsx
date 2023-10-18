@@ -1,9 +1,21 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function MenuBar() {
+export default async function MenuBar() {
+  const session = await getServerSession(authOptions);
+
   return (
     <div className="flex justify-end fixed z-10 right-0 left-0 bg-orange-200 h-14">
+      <Link
+        href={session ? "/api/auth/signout" : "/api/auth/signin"}
+        className="mr-auto"
+      >
+        <div className="h-full flex items-center px-7 bg-green-200 text-yellow-900 font-semibold">
+          {session ? "Sign-Out" : "Sign-In"}
+        </div>
+      </Link>
       <Link href={"/booking"}>
         <div className="inline-block text-center px-3 py-1 bg-zinc-400 mx-3 text-yellow-900">
           <div>Menu Item</div>
