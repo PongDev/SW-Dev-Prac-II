@@ -1,16 +1,57 @@
+"use client";
+
 import LocalizationDatePicker from "@/components/LocalizationDatePicker";
 import { MenuItem, Select } from "@mui/material";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
 import getUserProfile from "@/libs/getUserProfile";
+import { useSession } from "next-auth/react";
+import { useEffect, useRef, useState } from "react";
+import { Dayjs } from "dayjs";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { addBooking } from "@/redux/features/bookSlice";
 
-export default async function Booking() {
-  const session = await getServerSession(authOptions);
-  let user = null;
+export default function Booking() {
+  const session = useSession().data;
+  const [user, setUser] = useState<any>(null);
 
-  if (session?.user.token) {
-    user = (await getUserProfile(session.user.token)).data;
-  }
+  useEffect(() => {
+    (async () => {
+      if (session?.user.token) {
+        setUser((await getUserProfile(session.user.token)).data);
+      }
+    })();
+  }, []);
+
+  const nameRef = useRef<HTMLInputElement>(null);
+  const surnameRef = useRef<HTMLInputElement>(null);
+  const nationalIDRef = useRef<HTMLInputElement>(null);
+  const [hospital, setHospital] = useState<string>("");
+  const [date, setDate] = useState<Dayjs | null>(null);
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  const reserveVaccine = () => {
+    if (
+      nameRef.current &&
+      nameRef.current.value.trim() !== "" &&
+      surnameRef.current &&
+      surnameRef.current.value.trim() !== "" &&
+      nationalIDRef.current &&
+      nationalIDRef.current.value.trim() !== "" &&
+      hospital != "" &&
+      date != null
+    ) {
+      dispatch(
+        addBooking({
+          name: nameRef.current.value.trim(),
+          surname: surnameRef.current.value.trim(),
+          nationalID: nationalIDRef.current.value.trim(),
+          hospital: hospital,
+          date: date.format("YYYY-MM-DD"),
+        })
+      );
+    }
+  };
 
   return (
     <main className="flex justify-center py-5">
@@ -38,6 +79,7 @@ export default async function Booking() {
             className="block rounded-md mx-3 my-2 px-2 py-1 focus:placeholder-slate-300 focus:shadow-2xl grow"
             pattern="[A-Z][a-z]*"
             required
+            ref={nameRef}
           />
           <input
             type="text"
@@ -45,6 +87,7 @@ export default async function Booking() {
             className="block rounded-md mx-3 my-2 px-2 py-1 focus:placeholder-slate-300 focus:shadow-2xl grow"
             pattern="[A-Z][a-z]*"
             required
+            ref={surnameRef}
           />
         </div>
         <input
@@ -53,11 +96,14 @@ export default async function Booking() {
           className="block rounded-md mx-3 my-2 px-2 py-1 focus:placeholder-slate-300 focus:shadow-2xl"
           pattern="[0-9]{13}"
           required
+          ref={nationalIDRef}
         />
         <Select
           className="rounded-md mx-3 my-2 px-2 py-1 bg-white"
           variant="standard"
           required
+          value={hospital}
+          onChange={(e) => setHospital(e.target.value as string)}
         >
           <MenuItem value="Chulalongkorn Hospital">
             Chulalongkorn Hospital
@@ -66,13 +112,18 @@ export default async function Booking() {
           <MenuItem value="Thammasat">University Hospital</MenuItem>
         </Select>
         <div className="flex flex-col mx-3 my-2">
-          <LocalizationDatePicker className="rounded-md bg-white" />
+          <LocalizationDatePicker
+            className="rounded-md bg-white"
+            onChange={setDate}
+          />
         </div>
-        <input
-          type="submit"
-          value="Submit"
+        <button
+          type="button"
           className="rounded-md mx-3 my-2 px-2 py-1 bg-amber-500 hover:bg-amber-400 border border-amber-600 hover:border-amber-500 font-medium"
-        />
+          onClick={reserveVaccine}
+        >
+          Reserve Vaccine
+        </button>
       </form>
     </main>
   );

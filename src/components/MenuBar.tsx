@@ -8,14 +8,18 @@ export default async function MenuBar() {
 
   return (
     <div className="flex justify-end fixed z-10 right-0 left-0 bg-orange-200 h-14">
-      <Link
-        href={session ? "/api/auth/signout" : "/api/auth/signin"}
-        className="mr-auto"
-      >
-        <div className="h-full flex items-center px-7 bg-green-200 text-yellow-900 font-semibold">
-          {session ? "Sign-Out" : "Sign-In"}
-        </div>
-      </Link>
+      <div className="mr-auto flex">
+        <Link href={session ? "/api/auth/signout" : "/api/auth/signin"}>
+          <div className="h-full flex items-center px-7 bg-green-200 text-yellow-900 font-semibold">
+            {session ? "Sign-Out" : "Sign-In"}
+          </div>
+        </Link>
+        <Link href={"/mybooking"}>
+          <div className="h-full flex items-center px-5 bg-sky-200 text-yellow-900 font-semibold">
+            My Booking
+          </div>
+        </Link>
+      </div>
       <Link href={"/booking"}>
         <div className="inline-block text-center px-3 py-1 bg-zinc-400 mx-3 text-yellow-900">
           <div>Menu Item</div>
