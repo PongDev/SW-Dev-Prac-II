@@ -18,7 +18,7 @@ export default async function HospitalCatalog({
     <div>
       <div className="flex flex-wrap justify-center">
         {hospitals.map((hospital) => (
-          <Link href={`/hospital/${hospital.id}`}>
+          <Link href={`/hospital/${hospital.id}`} key={hospital.id}>
             <Card
               imgSrc={hospital.picture}
               name={hospital.name}
